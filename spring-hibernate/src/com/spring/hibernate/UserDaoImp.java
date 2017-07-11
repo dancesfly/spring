@@ -27,6 +27,6 @@ public class UserDaoImp implements UserDao {
 	public void updateName(Integer id, String name) {
 		int count = 0;
 		String sql = "UPDATE User SET NAME = ? WHERE ID = ?";
-		getSession().createQuery(sql).setInteger(0, id).executeUpdate();
+		getSession().createQuery(sql).setInteger(1, id).setString(0, name).executeUpdate();
 	}
 }
