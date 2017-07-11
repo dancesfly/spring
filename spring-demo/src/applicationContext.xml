@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<!-- 最简单的spring helloworld -->
+	<bean id="helloworld" class="com.spring.helloworld.HelloWorld">
+		<property name="name" value=" begin"/>
+	</bean>
+	
+	<!-- p标签使用 -->
+	<bean id="hellovivi" class="com.spring.helloworld.HelloWorld" p:name=" vivi"/>
+	
+	<!-- 引用对象 -->
+	<bean id="car" class="com.spring.helloworld.Car" p:bond="宝马" p:speed="100"/>
+	<bean id="vivi" class="com.spring.helloworld.Person">
+		<property name="age" value="100"/>
+		<property name="name" value="vivi"/>
+		<property name="car" ref="car"/>
+	</bean>
+	
+	<!-- 构造函数 -->
+	<bean id="begin" class="com.spring.helloworld.Person">
+		<constructor-arg name="age" value="200"/>
+		<constructor-arg name="name">
+			<value><![CDATA[^begin]]></value>
+		</constructor-arg>
+		<constructor-arg name="car" ref="car"/>
+	</bean>
+	
+	<!-- 内部bean -->
+	<bean id="dancesfly" class="com.spring.helloworld.Person">
+		<property name="age" value="200"/>
+		<property name="name" value="dancesfly"/>
+		<property name="car">
+			<bean class="com.spring.helloworld.Car">
+				<constructor-arg name="bond" value="本田"/>
+				<constructor-arg name="speed" value="1000"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- 集合-List  -->
+	<bean id="viviList" class="com.spring.helloworld.PersonList">
+		<property name="age" value="200"/>
+		<property name="name" value="viviList"/>
+		<property name="car">
+			<list>
+				<ref bean="car"/>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- util-list -->
+	<util:list id="cars">
+		<ref bean="car"/>
+	</util:list>
+	
+	<bean id="viviLists" class="com.spring.helloworld.PersonList">
+		<property name="age" value="200"/>
+		<property name="name" value="viviList"/>
+		<property name="car" ref="cars"/>
+	</bean>
+	
+	<!-- 集合-Map  -->
+	<bean id="viviMap" class="com.spring.helloworld.PersonMap">
+		<property name="age" value="200"/>
+		<property name="name" value="viviMap"/>
+		<property name="car">
+			<map>
+				<entry key="baoma" value-ref="car"/>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- properties -->
+	<bean id="dataSource" class="com.spring.helloworld.Propertie">
+		<property name="properties">
+			<props>
+				<prop key="name">begin</prop>
+				<prop key="pwd">123456</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- autowire -->
+	<bean id="Car" class="com.spring.helloworld.Car" p:bond="奔驰" p:speed="100"/>
+	<!-- 根据变量名找id名 -->
+	<bean id="auto" class="com.spring.helloworld.Person" p:age="10" p:name="auto" autowire="byName"/>
+	
+	<!-- 继承 -->
+	<bean id="saiou" parent="Car" p:bond="赛欧"/>
+	<bean id="parent" parent="auto" p:car-ref="saiou" p:name="parent"/> 
+	
+	<!-- 依赖 -->
+	<bean id="depend" parent="auto" depends-on="saiou" p:name="depend"/> 
+	
+	<!-- 多例 -->
+	<bean id="prototype" parent="auto" p:name="prototype" scope="prototype"/>
+
+	<!-- 连接mysql -->
+	<bean id="dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="root"/>
+		<property name="password" value="123456"/>
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql:///test"/>
+	</bean>
+	
+	<!-- 引用外部文件连接mysql -->
+	<context:property-placeholder location="classpath:db.properties"/>
+	<bean id="dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${user}"/>
+		<property name="password" value="${password}"/>
+		<property name="driverClass" value="${driverClass}"/>
+		<property name="jdbcUrl" value="${jdbcUrl}"/>
+	</bean>
+	
+	<!-- spel -->
+	<bean id="carSpel" class="com.spring.helloworld.Car" p:bond="奔驰" p:speed="#{20*2}"/>
+	<bean id="carSpel_math" class="com.spring.helloworld.Car" p:bond="奔驰" p:speed="#{T(java.lang.Math).PI}"/>
+	<bean id="carSpel_wen" class="com.spring.helloworld.Car" p:bond="奔驰" p:speed="#{1==2?10:20}"/>
+	
+	<!-- bean生命周期 -->
+	<bean id="carRound" class="com.spring.helloworld.Car" init-method="init" destroy-method="destroy" p:bond="周期" p:speed="#{20*2}" />
+	<bean id="carRound2" class="com.spring.helloworld.Car" init-method="init2" destroy-method="destroy2" p:bond="周期" p:speed="#{20*2}" />
+	
+	<!-- bean前置后置函数 -->
+	<bean class="com.spring.helloworld.PostProcessor" />
+	
+	<!-- 静态工厂方法 -->
+	<bean id="staticCar" class="com.spring.helloworld.Cars" factory-method="getCar">
+		<constructor-arg value="vivicar" />
+	</bean>
+	
+	<!-- 动态工厂方法 静态通过静态代码块 动态通过构造函数，共同点都是用HaspMap-->
+	<bean id='carFactory' class="com.spring.helloworld.InstanceCar" />
+	<bean id="instanceCar" factory-bean="carFactory" factory-method="getCar">
+		<constructor-arg value="begincar" />
+	</bean>
+	
+	<!-- factory bean:通过getObject获取 -->
+	<bean id='carFactoryBean' class="com.spring.helloworld.CarFactoryBean">
+		<property name="bond" value="BWM" />
+	</bean>
+	
+	<!-- 通过注解扫描bean -->
+	<!-- 只匹配Test的bean -->
+	<!-- include需要配合use-default-filters使用 -->
+	<!-- annotation:注解类  assignable:用户定义类 -->
+	<!-- resource-pattern:如果helloworld还有test包，test/*Test.class -->
+	<context:component-scan base-package="com.spring.helloworld" resource-pattern="*Test.class" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<!-- <context:include-filter type="assignable" expression="com.spring.helloworld.CarAnnotationTest"/>-->
+	</context:component-scan>
+</beans>

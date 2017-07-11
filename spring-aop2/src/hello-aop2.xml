@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean id="car" class="com.spring.aop.Car" />
+	<bean id="loggingAspect" class="com.spring.aop.LoggingAspect" />
+	
+	<aop:config>
+		<aop:pointcut expression="execution(public int com.spring.aop.Car.div(int, int))" id="pointCut"/>
+		<aop:aspect ref="loggingAspect" order="2">
+			<aop:before method="beforeMethod" pointcut-ref="pointCut" />
+			<aop:after method="afterMethod" pointcut-ref="pointCut" />
+			<aop:after-returning method="afterReturnMethod" pointcut-ref="pointCut" returning="reslut"/>
+			<aop:after-throwing method="afterThrowMethod" pointcut-ref="pointCut" throwing="ex"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

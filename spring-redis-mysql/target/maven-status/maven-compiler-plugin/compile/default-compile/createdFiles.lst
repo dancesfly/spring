@@ -1,0 +1,5 @@
+com\spring\mybatis\User.class
+com\spring\mybatis\TestMybatis.class
+com\spring\mybatis\UserRedis.class
+com\spring\mybatis\UserMysql.class
+com\spring\mapper\UserMapper.class
