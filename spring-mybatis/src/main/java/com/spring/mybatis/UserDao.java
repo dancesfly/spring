@@ -1,5 +1,7 @@
 package com.spring.mybatis;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,10 @@ public class UserDao {
 		user.setName("hello");
 		
 		userMapper.insert(user);
+	}
+	
+	public List<Group> group(Integer age) {
+		System.out.println(userMapper);
+		return userMapper.groupByName(age);
 	}
 }

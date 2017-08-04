@@ -108,4 +108,16 @@
       age = #{age,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <resultMap id="GroupResultMap" type="com.spring.mybatis.Group">
+    <id column="count" jdbcType="INTEGER" property="count" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+  </resultMap>
+  
+  <select id="groupByName" resultMap="GroupResultMap">
+    select count(*) count, name from user 
+    where age = #{age}
+    group by name order by id asc;
+  </select>
+  
 </mapper>

@@ -9,7 +9,7 @@ public class TestMybatis {
 	public static void main(String[] args) {		
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:hello-mybatis.xml");
 		UserDao userDao = (UserDao) ctx.getBean(UserDao.class);
-		userDao.add();
+		System.out.println(userDao.group(10));
 		
 		((AbstractApplicationContext) ctx).close();
 	}

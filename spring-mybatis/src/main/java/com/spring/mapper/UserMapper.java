@@ -1,5 +1,10 @@
 package com.spring.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.spring.mybatis.Group;
 import com.spring.mybatis.User;
 
 public interface UserMapper {
@@ -39,4 +44,6 @@ public interface UserMapper {
 	 * @mbg.generated  Fri Apr 21 12:30:52 CST 2017
 	 */
 	int updateByPrimaryKey(User record);
+	
+	List<Group> groupByName(@Param("age")Integer age);
 }
