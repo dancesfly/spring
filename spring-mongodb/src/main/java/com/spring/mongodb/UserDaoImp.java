@@ -47,7 +47,7 @@ public class UserDaoImp implements UserDao {
 	
 	public void removeOne(String id) {
 		Criteria criteria = Criteria.where("id").in(id);   
-        if(criteria == null){   
+        if(criteria != null){   
 			Query query = new Query(criteria);   
 			if(query != null && getMongoTemplate().findOne(query, User.class) != null)   
 				getMongoTemplate().remove(getMongoTemplate().findOne(query, User.class));   

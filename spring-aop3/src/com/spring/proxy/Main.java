@@ -5,6 +5,6 @@ public class Main {
 		CarInterface target = new Car();
 		CarInterface proxy = new CarProxy(target).getProxy();
 		proxy.hello("vivi");
-		proxy.div(100, 0);
+		proxy.div(100, 1);
 	}
 }

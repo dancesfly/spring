@@ -15,7 +15,7 @@ public class UserDao {
 		System.out.println(userMapper);
 		User user = new User();
 		user.setAge(10);
-		user.setId(200);
+		user.setId(201);
 		user.setName("hello");
 		
 		userMapper.insert(user);
